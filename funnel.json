@@ -1,0 +1,527 @@
+<!-- ===================== FUNNEL JSON (single block) ===================== -->
+  <script
+    id="funnel-json"
+    type="application/json">
+    {
+      "id": "dating_funnel_v1",
+      "version": 1,
+      "start": "intro",
+
+      "steps": {
+        "intro": {
+          "type": "landing",
+          "variantStrategy": "random",
+          "variants": [
+            {
+              "id": "v1",
+              "headline": "Are you wasting time on dating apps that don't deliver?",
+              "description": "Take this quick survey to find the best dating app for you.",
+              "cta": { "label": "Start" },
+              "lowerTip": "We have catalogued over 4,000 dating apps."
+            },
+            {
+              "id": "v2",
+              "headline": "Fed up with Tinder?",
+              "description": "Take this quick survey to find the best dating app for you.",
+              "cta": { "label": "Lets Go" },
+              "lowerTip": "We have catalogued over 4,000 dating apps."
+            },
+            {
+              "id": "v3",
+              "headline": "Which dating app matches you?",
+              "description": "Take this quick survey to find the best dating app for you.",
+              "cta": { "label": "Begin" },
+              "lowerTip": "We have catalogued over 4,000 dating apps."
+            },
+            {
+              "id": "v4",
+              "headline": "Which dating app matches you?",
+              "description": "Take this quick survey to find the best dating app for you.",
+              "cta": { "label": "Lets Go" },
+              "lowerTip": "Thousands of apps and communities are out there that might be a better fit for you."
+            }
+          ],
+          "next": "opening_relationship_goal"
+        },
+
+        "opening_relationship_goal": {
+          "type": "question_single",
+          "name": "RelationshipType",
+          "tip": "Be honest, some of your answers may help us improve your experience.",
+          "question": "So, you're here for...",
+          "options": [
+            { "id": "fun", "label": "Some fun", "value": "casual", "next": "flow_excite_ref" },
+            { "id": "friendship", "label": "New friendship", "value": "friendship", "next": "flow_social_ref" },
+            { "id": "serious", "label": "Serious connection", "value": "serious", "next": "flow_affinity_serious_ref" }
+          ],
+          "bind": "context.answers.relationshipType"
+        },
+
+        "flow_excite_ref": {
+          "type": "flow_ref",
+          "flowId": "excite_v1",
+          "next": "flow_universal_profile_ref"
+        },
+
+        "flow_social_ref": {
+          "type": "flow_ref",
+          "flowId": "social_v1",
+          "next": "flow_universal_profile_ref"
+        },
+
+        "flow_affinity_serious_ref": {
+          "type": "flow_ref",
+          "flowId": "affinity_serious_v1",
+          "next": "flow_affinity_append_ref"
+        },
+
+        "flow_affinity_append_ref": {
+          "type": "flow_ref",
+          "flowId": "affinity_append_v1",
+          "next": "flow_universal_profile_ref"
+        },
+
+        "flow_universal_profile_ref": {
+          "type": "flow_ref",
+          "flowId": "universal_profile_v1",
+          "next": "results"
+        },
+
+        "results": {
+          "type": "results",
+          "loading": {
+            "headline": "Congratulations!",
+            "description": "Finding the best dating app for you…",
+            "spinner": true
+          },
+          "data": {
+            "type": "invoke",
+            "capability": "brand_match",
+            "request": {
+              "leadFrom": "context.lead",
+              "answersFrom": "context.answers"
+            },
+            "saveResponseTo": "context.api.matchResult"
+          },
+          "render": {
+            "headlineFrom": "context.api.matchResult.headline",
+            "descriptionFrom": "context.api.matchResult.description",
+            "itemsFrom": "context.api.matchResult.recommendations",
+            "maxItems": 3
+          },
+          "next": "done"
+        },
+
+        "done": {
+          "type": "end",
+          "title": "All set",
+          "body": "Good luck — you’re done."
+        }
+      },
+
+      "flows": {
+        "excite_v1": {
+          "start": "excite_physical_chemistry",
+          "steps": {
+            "excite_physical_chemistry": {
+              "type": "question_multi",
+              "name": "PhysicalChemistry",
+              "question": "You're attracted to certain body shapes",
+              "options": [
+                { "id": "petite", "label": "Petite" },
+                { "id": "muscular", "label": "Muscular" },
+                { "id": "average", "label": "Average" },
+                { "id": "curvy", "label": "Curvy" },
+                { "id": "all", "label": "All of the above" }
+              ],
+              "bind": "context.answers.physicalChemistry",
+              "cta": "Next",
+              "next": "excite_erotic_fantasies"
+            },
+            "excite_erotic_fantasies": {
+              "type": "question_multi",
+              "name": "EroticFantasies",
+              "question": "Have you ever had a fantasy that included?",
+              "options": [
+                { "id": "dressing_up", "label": "Dressing up" },
+                { "id": "watching", "label": "Watching others" },
+                { "id": "group", "label": "Group setting" },
+                { "id": "outdoors", "label": "Being outdoors" }
+              ],
+              "bind": "context.answers.eroticFantasies",
+              "cta": "Next",
+              "next": "excite_relationship_status"
+            },
+            "excite_relationship_status": {
+              "type": "question_single",
+              "name": "RelationshipStatus",
+              "question": "Are you in a relationship now?",
+              "options": [
+                { "id": "single", "label": "No, that's why I'm here!", "value": "single" },
+                { "id": "open", "label": "Yes, we're open", "value": "open" },
+                { "id": "discreet", "label": "Yes, but be discreet", "value": "discreet" }
+              ],
+              "bind": "context.answers.relationshipStatus",
+              "cta": "Next",
+              "next": "__end__"
+            }
+          }
+        },
+
+        "social_v1": {
+          "start": "social_meeting_age",
+          "steps": {
+            "social_meeting_age": {
+              "type": "question_single",
+              "name": "MeetingAge",
+              "question": "I'm hoping to meet someone",
+              "options": [
+                { "id": "younger", "label": "Younger", "value": "younger" },
+                { "id": "similar", "label": "Similar age", "value": "similar" },
+                { "id": "older", "label": "Older", "value": "older" },
+                { "id": "no_pref", "label": "No preference", "value": "none" }
+              ],
+              "bind": "context.answers.meetingAgePreference",
+              "cta": "Next",
+              "next": "__end__"
+            }
+          }
+        },
+
+        "affinity_serious_v1": {
+          "start": "aff_meeting_age",
+          "steps": {
+            "aff_meeting_age": {
+              "type": "question_single",
+              "name": "MeetingAge",
+              "tip": "Be honest, some of your answers may help us improve your experience.",
+              "question": "I'm hoping to meet someone",
+              "options": [
+                { "id": "younger", "label": "Younger", "value": "younger" },
+                { "id": "similar", "label": "Similar age", "value": "similar" },
+                { "id": "older", "label": "Older", "value": "older" },
+                { "id": "no_pref", "label": "No preference", "value": "none" }
+              ],
+              "bind": "context.answers.meetingAgePreference",
+              "cta": "Next",
+              "next": "aff_matching_logic"
+            },
+
+            "aff_matching_logic": {
+              "type": "question_multi",
+              "name": "MatchingLogic",
+              "question": "What should the dating app match you based on?",
+              "preselect": ["looks", "personality", "culture", "lifestyle", "stage_of_life"],
+              "minSelected": 1,
+              "options": [
+                { "id": "looks", "label": "Looks" },
+                { "id": "personality", "label": "Personality" },
+                { "id": "culture", "label": "Culture" },
+                { "id": "lifestyle", "label": "Lifestyle" },
+                { "id": "stage_of_life", "label": "Stage of life" }
+              ],
+              "bind": "context.answers.matchingLogic",
+              "cta": "Next",
+              "next": "aff_router"
+            },
+
+            "aff_router": {
+              "type": "router",
+              "routes": [
+                { "when": { "contains": ["context.answers.matchingLogic", "culture"] }, "to": "aff_beliefs" },
+                { "when": { "contains": ["context.answers.matchingLogic", "looks"] }, "to": "aff_physical_chemistry" },
+                { "when": { "contains": ["context.answers.matchingLogic", "lifestyle"] }, "to": "aff_lifestyle" },
+                { "when": { "contains": ["context.answers.matchingLogic", "personality"] }, "to": "aff_personality_mode" }
+              ],
+              "defaultNext": "__end__"
+            },
+
+            "aff_beliefs": {
+              "type": "question_single",
+              "name": "Beliefs",
+              "question": "How would you describe your beliefs?",
+              "options": [
+                { "id": "religious", "label": "Religious", "value": "religious" },
+                { "id": "spiritual", "label": "Spiritual", "value": "spiritual" },
+                { "id": "curious", "label": "Curious about the unknown", "value": "curious" },
+                { "id": "none", "label": "None / not important", "value": "none" }
+              ],
+              "bind": "context.answers.beliefs",
+              "cta": "Next",
+              "next": "aff_religion_gate"
+            },
+
+            "aff_religion_gate": {
+              "type": "router",
+              "routes": [
+                { "when": { "eq": ["context.answers.beliefs", "religious"] }, "to": "aff_religion" }
+              ],
+              "defaultNext": "aff_return_to_router"
+            },
+
+            "aff_religion": {
+              "type": "question_single",
+              "name": "Religion",
+              "question": "What is your faith?",
+              "options": [
+                { "id": "christian", "label": "Christian", "value": "christian" },
+                { "id": "jewish", "label": "Jewish", "value": "jewish" },
+                { "id": "muslim", "label": "Muslim", "value": "muslim" },
+                { "id": "other", "label": "Other", "value": "other" }
+              ],
+              "bind": "context.answers.religion",
+              "cta": "Next",
+              "next": "aff_return_to_router"
+            },
+
+            "aff_physical_chemistry": {
+              "type": "question_multi",
+              "name": "PhysicalChemistry",
+              "question": "You're attracted to certain body shapes",
+              "options": [
+                { "id": "petite", "label": "Petite" },
+                { "id": "muscular", "label": "Muscular" },
+                { "id": "average", "label": "Average" },
+                { "id": "curvy", "label": "Curvy" },
+                { "id": "all", "label": "All of the above" }
+              ],
+              "bind": "context.answers.physicalChemistry",
+              "cta": "Next",
+              "next": "aff_return_to_router"
+            },
+
+            "aff_lifestyle": {
+              "type": "question_multi",
+              "name": "Lifestyle",
+              "question": "I'm interested in",
+              "options": [
+                { "id": "active", "label": "Being active" },
+                { "id": "food", "label": "Good food" },
+                { "id": "music", "label": "Music" },
+                { "id": "pets", "label": "Pets" },
+                { "id": "games", "label": "Games" }
+              ],
+              "bind": "context.answers.lifestyleInterests",
+              "cta": "Next",
+              "next": "aff_return_to_router"
+            },
+
+            "aff_personality_mode": {
+              "type": "question_single",
+              "name": "Personality",
+              "question": "My personality type",
+              "options": [
+                { "id": "unknown", "label": "I don't know", "value": "unknown" },
+                { "id": "pick", "label": "Let me pick", "value": "pick" }
+              ],
+              "bind": "context.answers.personalityMode",
+              "cta": "Next",
+              "next": "aff_personality_gate"
+            },
+
+            "aff_personality_gate": {
+              "type": "router",
+              "routes": [
+                { "when": { "eq": ["context.answers.personalityMode", "pick"] }, "to": "aff_personality_picker" }
+              ],
+              "defaultNext": "aff_return_to_router"
+            },
+
+            "aff_personality_picker": {
+              "type": "question_single",
+              "name": "PersonalityType",
+              "question": "Choose the closest fit",
+              "options": [
+                { "id": "type_1", "label": "Type 1", "value": "type_1" },
+                { "id": "type_2", "label": "Type 2", "value": "type_2" },
+                { "id": "type_3", "label": "Type 3", "value": "type_3" },
+                { "id": "type_4", "label": "Type 4", "value": "type_4" },
+                { "id": "type_5", "label": "Type 5", "value": "type_5" }
+              ],
+              "bind": "context.answers.personalityType",
+              "cta": "Next",
+              "next": "aff_return_to_router"
+            },
+
+            "aff_return_to_router": {
+              "type": "router",
+              "routes": [
+                {
+                  "when": { "and": [
+                    { "contains": ["context.answers.matchingLogic", "culture"] },
+                    { "notSet": ["context.answers.beliefs"] }
+                  ] },
+                  "to": "aff_beliefs"
+                },
+                {
+                  "when": { "and": [
+                    { "contains": ["context.answers.matchingLogic", "looks"] },
+                    { "notSet": ["context.answers.physicalChemistry"] }
+                  ] },
+                  "to": "aff_physical_chemistry"
+                },
+                {
+                  "when": { "and": [
+                    { "contains": ["context.answers.matchingLogic", "lifestyle"] },
+                    { "notSet": ["context.answers.lifestyleInterests"] }
+                  ] },
+                  "to": "aff_lifestyle"
+                },
+                {
+                  "when": { "and": [
+                    { "contains": ["context.answers.matchingLogic", "personality"] },
+                    { "notSet": ["context.answers.personalityMode"] }
+                  ] },
+                  "to": "aff_personality_mode"
+                }
+              ],
+              "defaultNext": "__end__"
+            }
+          }
+        },
+
+        "affinity_append_v1": {
+          "start": "app_drinking",
+          "steps": {
+            "app_drinking": {
+              "type": "question_single",
+              "name": "Drinking",
+              "question": "You and alcohol",
+              "options": [
+                { "id": "sober", "label": "Sober", "value": "sober" },
+                { "id": "occasional", "label": "Drink occasionally", "value": "occasional" },
+                { "id": "regular", "label": "Regularly", "value": "regular" }
+              ],
+              "bind": "context.answers.drinking",
+              "cta": "Next",
+              "next": "app_smoking"
+            },
+            "app_smoking": {
+              "type": "question_single",
+              "name": "Smoking",
+              "question": "Do you smoke?",
+              "options": [
+                { "id": "no", "label": "No", "value": "no" },
+                { "id": "vape", "label": "Vape", "value": "vape" },
+                { "id": "tobacco", "label": "Yes, tobacco", "value": "tobacco" },
+                { "id": "other", "label": "Yes, other substance", "value": "other" }
+              ],
+              "bind": "context.answers.smoking",
+              "cta": "Next",
+              "next": "app_health"
+            },
+            "app_health": {
+              "type": "question_single",
+              "name": "Health",
+              "tip": "Some dating communities are more accommodating.",
+              "question": "How fit are you?",
+              "options": [
+                { "id": "very_fit", "label": "Pretty fit", "value": "very_fit" },
+                { "id": "underweight", "label": "Underweight", "value": "underweight" },
+                { "id": "average", "label": "Average", "value": "average" },
+                { "id": "overweight", "label": "Overweight", "value": "overweight" },
+                { "id": "medical", "label": "Have medical issues", "value": "medical" }
+              ],
+              "bind": "context.answers.health",
+              "cta": "Next",
+              "next": "app_life_events_gate"
+            },
+            "app_life_events_gate": {
+              "type": "router",
+              "routes": [
+                { "when": { "contains": ["context.answers.matchingLogic", "stage_of_life"] }, "to": "app_life_events" }
+              ],
+              "defaultNext": "__end__"
+            },
+            "app_life_events": {
+              "type": "question_multi",
+              "name": "LifeEvents",
+              "question": "Any significant life events you have experienced?",
+              "options": [
+                { "id": "married", "label": "Married or civil partnership" },
+                { "id": "children", "label": "Have children" },
+                { "id": "divorced", "label": "Divorce or separation" },
+                { "id": "single_parent", "label": "Single parent" },
+                { "id": "widowed", "label": "Widowed" },
+                { "id": "retired", "label": "Retired" }
+              ],
+              "bind": "context.answers.lifeEvents",
+              "cta": "Next",
+              "next": "__end__"
+            }
+          }
+        },
+
+        "universal_profile_v1": {
+          "start": "u_gender",
+          "steps": {
+            "u_gender": {
+              "type": "question_single",
+              "name": "YourGender",
+              "question": "I am",
+              "options": [
+                { "id": "male", "label": "Male", "value": "male" },
+                { "id": "female", "label": "Female", "value": "female" },
+                { "id": "trans", "label": "Trans", "value": "trans" }
+              ],
+              "bind": "context.answers.gender",
+              "cta": "Next",
+              "next": "u_age"
+            },
+            "u_age": {
+              "type": "question_single",
+              "name": "YourAge",
+              "question": "Your age range is",
+              "options": [
+                { "id": "18_30", "label": "18–30", "value": "18_30" },
+                { "id": "31_45", "label": "31–45", "value": "31_45" },
+                { "id": "46_60", "label": "46–60", "value": "46_60" },
+                { "id": "61_70", "label": "61–70", "value": "61_70" },
+                { "id": "70_plus", "label": "70+", "value": "70_plus" }
+              ],
+              "bind": "context.answers.ageRange",
+              "cta": "Next",
+              "next": "u_sexuality"
+            },
+            "u_sexuality": {
+              "type": "question_single",
+              "name": "Sexuality",
+              "question": "You consider yourself to be",
+              "options": [
+                { "id": "straight", "label": "Straight", "value": "straight" },
+                { "id": "gay", "label": "Gay", "value": "gay" },
+                { "id": "bi_curious", "label": "Bi / Curious", "value": "bi_curious" },
+                { "id": "trans", "label": "Trans", "value": "trans" }
+              ],
+              "bind": "context.answers.sexuality",
+              "cta": "Next",
+              "next": "u_location"
+            },
+            "u_location": {
+              "type": "form",
+              "name": "Location",
+              "question": "Your nearest town/city",
+              "fields": [
+                { "id": "locationText", "kind": "text", "label": "Town/City", "required": true, "bind": "context.answers.locationText", "placeholder": "e.g. Glasgow" }
+              ],
+              "actions": [
+                { "id": "geo", "label": "Use my location", "type": "client_action", "action": { "kind": "geo_lookup", "saveTo": "context.answers.geo" } }
+              ],
+              "validation": { "requireOneOf": ["context.answers.locationText", "context.answers.geo"] },
+              "cta": "Next",
+              "onSubmit": { "next": "__end__" }
+            }
+          }
+        }
+      },
+
+      "capabilities": {
+        "brand_match": {
+          "type": "http",
+          "method": "POST",
+          "url": "/api/brand-match",
+          "timeoutMs": 8000
+        }
+      }
+    }
+  </script>
